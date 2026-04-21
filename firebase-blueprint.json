@@ -1,0 +1,106 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "defaultStudyMode": { "type": "string" },
+            "preferredLanguage": { "type": "string" }
+          }
+        },
+        "feedback": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "GeneratedFile": {
+      "title": "GeneratedFile",
+      "description": "Metadata for a generated study file",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["id", "title", "content", "createdBy"]
+    },
+    "GlobalConfig": {
+      "title": "GlobalConfig",
+      "description": "Global application configuration and dynamic prompt tuning",
+      "type": "object",
+      "properties": {
+        "dynamicPromptTuning": { "type": "string" },
+        "totalUsers": { "type": "number" },
+        "totalFiles": { "type": "number" }
+      }
+    },
+    "TamredianoLibraryItem": {
+      "title": "TamredianoLibraryItem",
+      "description": "Folders and files in the shared library",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["folder", "file"] },
+        "parentId": { "type": "string" },
+        "url": { "type": "string" },
+        "mimeType": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["name", "type", "parentId", "createdBy"]
+    },
+    "ApiKey": {
+      "title": "ApiKey",
+      "description": "API keys managed by admins",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "key": { "type": "string" },
+        "addedBy": { "type": "string" },
+        "usageCount": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "exhausted", "invalid"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["key", "addedBy", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/files/{fileId}": {
+      "schema": "GeneratedFile",
+      "description": "Generated study materials"
+    },
+    "/config/global": {
+      "schema": "GlobalConfig",
+      "description": "Global settings and stats"
+    },
+    "/tamrediano_library/{itemId}": {
+      "schema": "TamredianoLibraryItem",
+      "description": "Files and folders for tamrediano library"
+    },
+    "/api_keys/{keyId}": {
+      "schema": "ApiKey",
+      "description": "API keys for Gemini"
+    }
+  }
+}
